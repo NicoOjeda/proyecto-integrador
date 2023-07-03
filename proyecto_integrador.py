@@ -3,12 +3,10 @@
 # ▪ Agregar una nueva.
 # ▪ Modificar los datos existentes.
 # ▪ Borrar una seleccionada.
-# 2. Funciones de búsqueda de comidas rápidas a partir de los siguientes criterios:
-# ▪ Buscar por ingrediente.
-# ▪ Buscar por precio.
-# ▪ Buscar por calorías.
-# ▪ Las comidas veganas disponibles.
+
 import json 
+from colorama import Fore, init
+init()
 
 def cargar_datos():
     with open('comidas_rapidas.json',"r") as contenido:
@@ -23,14 +21,14 @@ def agregar_datos():
 
 
 def mostrar_comidas():
-    print('Mostrar comidas rapidas')
+    print(Fore.BLACK + 'Mostrar comidas rapidas')
     print('Las comidas existentes son:')
     for i in comidas:
         print(i['descripcion'] )
     return menu()
 
 def agregar_comida():
-    print('Agregar comida rapida')
+    print(Fore.BLACK + 'Agregar comida rapida')
     Id =  len(comidas)+1
     Descripcion = input('Ingrese el nombre de la comida: ')
     Ingredientes = input('Ingrese los ingredientes de la comida de a uno, al finalizar escribir "listo": ')
@@ -56,11 +54,12 @@ def agregar_comida():
             }
     comidas.append(comida)
     print('Su comida fue agregada')
-    return agregar_datos()
+    agregar_datos() 
+    return menu()
 
 
 def modificar_comida():
-    print('Las comidas a modificar son:')
+    print(Fore.BLACK + 'Las comidas a modificar son:')
     for comida in comidas:
         print(comida['descripcion'],"-", end=" ")
     print(' ')
@@ -91,7 +90,7 @@ def modificar_comida():
 
                 
 def borrar_comida():
-    print('Las comidas a eliminar son:')
+    print(Fore.BLACK + 'Las comidas a eliminar son:')
     for comida in comidas:
         print(comida['descripcion'],"-", end=" ")
     print(' ')
@@ -103,19 +102,102 @@ def borrar_comida():
             indice= comidas.index(comida)
             comidas.pop(indice)
     agregar_datos()
-    print(comida, 'Su comida fue eliminada')
+    print(f"{comida['descripcion']} fue eliminada/o")
+    menu()
+
+# 2. Funciones de búsqueda de comidas rápidas a partir de los siguientes criterios:
+# ▪ Buscar por ingrediente.
+# ▪ Buscar por precio.
+# ▪ Buscar por calorías.
+# ▪ Las comidas veganas disponibles.
+
+def buscar_ingrediente():
+    print(Fore.BLACK + 'Buscar por precio:')
+    seleccionada= input('Ingrese un ingrediente por el cual desea buscar: ').lower().strip()
+    for comida in comidas:
+        for elemento in comida['ingredientes']:
+            if (elemento == seleccionada):
+                print(f'Descripción: {comida["descripcion"]}')
+                print(f'Ingredientes: {comida["ingredientes"]}')
+                print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+                print(f'Precio: {comida["precio"]}')
+                print(f'Calorias: {comida["calorias"]}')
+                if(comida['vegana'] == True):
+                    print(f'Vegana: si')
+                else:
+                    print(f'Vegana: no')
+                print('--------------------------------')
     menu()
             
-            
-    
-    
+
+
+def buscar_precio():
+    print(Fore.BLACK + 'Buscar por precio:')
+    seleccionada= int(input('Ingrese el precio por el cual desea buscar: $').lower().strip())
+    for comida in comidas:
+        if(comida['precio'] == seleccionada):
+            print(f'Descripción: {comida["descripcion"]}')
+            print(f'Ingredientes: {comida["ingredientes"]}')
+            print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+            print(f'Precio: {comida["precio"]}')
+            print(f'Calorias: {comida["calorias"]}')
+            if(comida['vegana'] == True):
+                print(f'Vegana: si')
+            else:
+                print(f'Vegana: no')
+            print('--------------------------------')
+    menu()
+
+def buscar_calorias():
+    print(Fore.BLACK +'Buscar por calorias:')
+    seleccionada= int(input('Ingrese las calorias en gramos por las cuales desea buscar: ').lower().strip())
+    for comida in comidas:
+        if comida['calorias'] == seleccionada:
+            print(f'Descripción: {comida["descripcion"]}')
+            print(f'Ingredientes: {comida["ingredientes"]}')
+            print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+            print(f'Precio: {comida["precio"]}')
+            print(f'Calorias: {comida["calorias"]}')
+            if(comida['vegana'] == True):
+                print(f'Vegana: si')
+            else:
+                print(f'Vegana: no')
+            print('--------------------------------')
+    menu()
+
+def buscar_veganas():
+    print(Fore.BLACK + 'Buscar comidas veganas o no veganas:')
+    seleccionada= input('La comida es vegana? si/no : ').lower().strip()
+    if(seleccionada == 'si'):
+        seleccionada = True
+    else:
+        seleccionada = False
+    for comida in comidas:
+        if comida['vegana'] == seleccionada:
+            print(f'Descripción: {comida["descripcion"]}')
+            print(f'Ingredientes: {comida["ingredientes"]}')
+            print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+            print(f'Precio: {comida["precio"]}')
+            print(f'Calorias: {comida["calorias"]}')
+            if(comida['vegana'] == True):
+                print(f'Vegana: si')
+            else:
+                print(f'Vegana: no')
+            print('--------------------------------')
+    menu()
+
+# 3. Generar un mecanismo para agregar a la información existente los pasos para la elaboración de una o varias comidas del menú.
+
+
+
 def menu():
         print('--------------------------------')
-        print('Elija una opcion')
+        print(Fore.GREEN + 'Elija una opcion')
         print('1) Mostrar comidas rapidas')
         print('2) Agregar comida rapida')
         print('3) Modificar comida rapida')
         print('4) Borrar comida rapida')
+        print('5) Buscador de comida')
         print('0) salir')
         print('--------------------------------')
         opcion = int(input('Opcion elegida: '))
@@ -128,4 +210,29 @@ def menu():
                 modificar_comida()
             case 4:
                 borrar_comida()
+            case 5:
+                buscador()
+
+def buscador():
+    print('--------------------------------')
+    print(Fore.BLUE + 'Elija una manera de buscar')
+    print('1) Buscar por ingrediente.')
+    print('2) Buscar por precio.')
+    print('3) Buscar por calorías.')
+    print('4) Buscar comidas veganas disponibles')
+    print('0) Volver al menu principal')
+    print('--------------------------------')
+    opcion = int(input('Opcion elegida: '))
+    match opcion:
+        case 1:
+            buscar_ingrediente()
+        case 2:
+            buscar_precio()
+        case 3:
+            buscar_calorias()
+        case 4:
+            buscar_veganas()
+        case 5:
+            menu()
+    
 menu()
