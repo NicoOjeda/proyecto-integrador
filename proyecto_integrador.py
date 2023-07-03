@@ -20,14 +20,6 @@ def agregar_datos():
     with open('comidas_rapidas.json',"w") as contenido:
         return json.dump(comidas, contenido )
 
-print('Elija una opcion')
-print('1) Mostrar comidas rapidas')
-print('2) Agregar comida rapida')
-print('3) Modificar comida rapida')
-print('4) Borrar comida rapida')
-print('0) salir')
-print('--------------------------------')
-opcion = int(input('Opcion elegida: '))
 
 
 def mostrar_comidas():
@@ -35,6 +27,7 @@ def mostrar_comidas():
     print('Las comidas existentes son:')
     for i in comidas:
         print(i['descripcion'] )
+    return menu()
 
 def agregar_comida():
     print('Agregar comida rapida')
@@ -62,8 +55,10 @@ def agregar_comida():
             "vegana": Vegana
             }
     comidas.append(comida)
+    print('Su comida fue agregada')
     return agregar_datos()
-    
+
+
 def modificar_comida():
     print('Las comidas a modificar son:')
     for comida in comidas:
@@ -89,23 +84,48 @@ def modificar_comida():
             if (vegano_nuevo == "si"):
                 comida['vegana'] = True
             else:
-                comida['vegana'] = True 
-            return agregar_datos()
-            
+                comida['vegana'] = False
+            print('Su comida fue modificada')
+            agregar_datos()
+            return menu()
+
                 
-# def borrar_comida():
-#     seleccionada= input('Ingrese la comida a eliminar: ').lower().strip()
-#     for comida in comidas:
-#         if(comida['descripcion'] == seleccionada):
+def borrar_comida():
+    print('Las comidas a eliminar son:')
+    for comida in comidas:
+        print(comida['descripcion'],"-", end=" ")
+    print(' ')
+    seleccionada= input('Ingrese la comida a eliminar: ').lower().strip()
+    for comida in comidas:
+        if(comida['descripcion'] == seleccionada):
+            print(comida)
+            print(comidas.index(comida))
+            indice= comidas.index(comida)
+            comidas.pop(indice)
+    agregar_datos()
+    print(comida, 'Su comida fue eliminada')
+    menu()
+            
             
     
     
-match opcion:
-    case 1:
-        mostrar_comidas()
-    case 2:
-        agregar_comida()
-    case 3:
-        modificar_comida()
-    # case 4:
-        # borrar_comida_comida()
+def menu():
+        print('--------------------------------')
+        print('Elija una opcion')
+        print('1) Mostrar comidas rapidas')
+        print('2) Agregar comida rapida')
+        print('3) Modificar comida rapida')
+        print('4) Borrar comida rapida')
+        print('0) salir')
+        print('--------------------------------')
+        opcion = int(input('Opcion elegida: '))
+        match opcion:
+            case 1:
+                mostrar_comidas()
+            case 2:
+                agregar_comida()
+            case 3:
+                modificar_comida()
+            case 4:
+                borrar_comida()
+menu()
