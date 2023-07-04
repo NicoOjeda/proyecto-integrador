@@ -23,8 +23,19 @@ def agregar_datos():
 def mostrar_comidas():
     print(Fore.BLACK + 'Mostrar comidas rapidas')
     print('Las comidas existentes son:')
-    for i in comidas:
-        print(i['descripcion'] )
+    for comida in comidas:
+        print(f'Id: {comida["id"]}')
+        print(f'Descripción: {comida["descripcion"]}')
+        print(f'Ingredientes: {comida["ingredientes"]}')
+        print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+        print(f'Precio: {comida["precio"]}')
+        print(f'Calorias: {comida["calorias"]}')
+        if (comida["vegana"] == True):
+            print('Vegana : si')
+        elif(comida["vegana"] == False):
+            print('Vegana : no')
+        print(f'Receta: {comida["receta"]}')
+        print('--------------------------------')
     return menu()
 
 def agregar_comida():
@@ -65,7 +76,7 @@ def modificar_comida():
     print(' ')
     seleccionada= input('Ingrese la comida a ser modificada: ').lower().strip()
     for comida in comidas:
-        if(comida['descripcion'] == seleccionada):
+        if(comida['descripcion'].lower() == seleccionada):
             comida_nueva = input('Ingrese la nueva comida : ').lower().strip() 
             comida['descripcion'] = comida_nueva
             ingredientes_nuevos = input('Ingrese los ingredientes nuevos de la comida de a uno, al finalizar escribir "listo": ')
@@ -96,9 +107,8 @@ def borrar_comida():
     print(' ')
     seleccionada= input('Ingrese la comida a eliminar: ').lower().strip()
     for comida in comidas:
-        if(comida['descripcion'] == seleccionada):
+        if(comida['descripcion'].lower() == seleccionada):
             print(comida)
-            print(comidas.index(comida))
             indice= comidas.index(comida)
             comidas.pop(indice)
     agregar_datos()
@@ -188,6 +198,32 @@ def buscar_veganas():
 
 # 3. Generar un mecanismo para agregar a la información existente los pasos para la elaboración de una o varias comidas del menú.
 
+def agregar_receta():
+    print(Fore.BLACK + 'Las comidas para agregar eleboracion son:')
+    for comida in comidas:
+        print(comida['descripcion'],"-", end=" ")
+    print(' ')
+    seleccionada= input('Ingrese la comida para agregar eleboracion: ').lower().strip()
+    for comida in comidas:
+        if(comida['descripcion'].lower() == seleccionada):
+            receta_nueva = input('Ingrese los pasos de a uno para la receta, al finalizar escribir "listo": ')
+            receta = comida['receta'] =[]
+            while(receta_nueva != "listo"):
+                receta.append(receta_nueva)
+                receta_nueva = input('Ingrese los pasos de a uno para la receta, al finalizar escribir "listo": ')
+            print('La receta fue agregada')
+            print(f'Descripción: {comida["descripcion"]}')
+            print(f'Ingredientes: {comida["ingredientes"]}')
+            print(f'Tiempo de elaboración (en minutos): {comida["tiempo"]}')
+            print(f'Precio: {comida["precio"]}')
+            print(f'Calorias: {comida["calorias"]}')
+            if (comida["vegana"] == True):
+                print('Vegana = si')
+            elif(comida["vegana"] == False):
+                print('Vegana = no')
+            print(f"Receta= {comida['receta']}")
+            agregar_datos()
+            return menu()
 
 
 def menu():
@@ -198,6 +234,7 @@ def menu():
         print('3) Modificar comida rapida')
         print('4) Borrar comida rapida')
         print('5) Buscador de comida')
+        print('6) Agregar receta')
         print('0) salir')
         print('--------------------------------')
         opcion = int(input('Opcion elegida: '))
@@ -212,6 +249,10 @@ def menu():
                 borrar_comida()
             case 5:
                 buscador()
+            case 6:
+                agregar_receta()
+            case 0:
+                print('Hasta la proxima')
 
 def buscador():
     print('--------------------------------')
@@ -232,7 +273,7 @@ def buscador():
             buscar_calorias()
         case 4:
             buscar_veganas()
-        case 5:
+        case 0:
             menu()
     
 menu()
