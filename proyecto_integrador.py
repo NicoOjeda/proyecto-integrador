@@ -34,7 +34,6 @@ def mostrar_comidas():
             print('Vegana : si')
         elif(comida["vegana"] == False):
             print('Vegana : no')
-        print(f'Receta: {comida["receta"]}')
         print('--------------------------------')
     return menu()
 
